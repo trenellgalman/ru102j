@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -62,6 +63,7 @@ public class MetricDaoRedisZsetImpl implements MetricDao {
     // START Challenge #2
     String metricKey = RedisSchema.getDayMetricKey(siteId, unit, dateTime);
     Integer minuteOfDay = getMinuteOfDay(dateTime);
+    jedis.zadd(metricKey, minuteOfDay, value + ":" + minuteOfDay);
     // END Challenge #2
   }
 
