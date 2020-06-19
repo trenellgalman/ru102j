@@ -8,12 +8,11 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Transaction;
 
 public class SiteStatsDaoRedisImpl implements SiteStatsDao {
 
-  private final int weekSeconds = 60 * 60 * 24 * 7;
+  private static final int WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
   private final JedisPool jedisPool;
   private final CompareAndUpdateScript compareAndUpdateScript;
 
@@ -57,20 +56,20 @@ public class SiteStatsDaoRedisImpl implements SiteStatsDao {
     String reportingTime = ZonedDateTime.now(ZoneOffset.UTC).toString();
     jedis.hset(key, SiteStats.reportingTimeField, reportingTime);
     jedis.hincrBy(key, SiteStats.countField, 1);
-    jedis.expire(key, weekSeconds);
+    jedis.expire(key, WEEK_IN_SECONDS);
 
     String maxWh = jedis.hget(key, SiteStats.maxWhField);
-    if (maxWh == null || reading.getWhGenerated() > Double.valueOf(maxWh)) {
+    if (maxWh == null || reading.getWhGenerated() > Double.parseDouble(maxWh)) {
       jedis.hset(key, SiteStats.maxWhField, String.valueOf(reading.getWhGenerated()));
     }
 
     String minWh = jedis.hget(key, SiteStats.minWhField);
-    if (minWh == null || reading.getWhGenerated() < Double.valueOf(minWh)) {
+    if (minWh == null || reading.getWhGenerated() < Double.parseDouble(minWh)) {
       jedis.hset(key, SiteStats.minWhField, String.valueOf(reading.getWhGenerated()));
     }
 
     String maxCapacity = jedis.hget(key, SiteStats.maxCapacityField);
-    if (maxCapacity == null || getCurrentCapacity(reading) > Double.valueOf(maxCapacity)) {
+    if (maxCapacity == null || getCurrentCapacity(reading) > Double.parseDouble(maxCapacity)) {
       jedis.hset(key, SiteStats.maxCapacityField, String.valueOf(getCurrentCapacity(reading)));
     }
   }
@@ -78,13 +77,12 @@ public class SiteStatsDaoRedisImpl implements SiteStatsDao {
   // Challenge #3
   private void updateOptimized(Jedis jedis, String key, MeterReading reading) {
     // START Challenge #3
-    CompareAndUpdateScript compareAndUpdateScript = new CompareAndUpdateScript(jedisPool);
     Transaction transaction = jedis.multi();
     String reportingTime = ZonedDateTime.now(ZoneOffset.UTC).toString();
 
     transaction.hset(key, SiteStats.reportingTimeField, reportingTime);
     transaction.hincrBy(key, SiteStats.countField, 1);
-    transaction.expire(key, weekSeconds);
+    transaction.expire(key, WEEK_IN_SECONDS);
 
     compareAndUpdateScript.updateIfGreater(transaction, key, SiteStats.maxWhField, reading.getWhGenerated());
     compareAndUpdateScript.updateIfLess(transaction, key, SiteStats.minWhField, reading.getWhGenerated());
