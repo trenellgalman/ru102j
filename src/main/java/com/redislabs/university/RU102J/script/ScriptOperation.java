@@ -1,4 +1,4 @@
-package com.redislabs.university.RU102J.script;
+package com.redislabs.university.ru102j.script;
 
 public enum ScriptOperation {
   GREATERTHAN(">"),

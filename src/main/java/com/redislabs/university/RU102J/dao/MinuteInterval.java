@@ -1,4 +1,4 @@
-package com.redislabs.university.RU102J.dao;
+package com.redislabs.university.ru102j.dao;
 
 public enum MinuteInterval {
   ONE(1),
