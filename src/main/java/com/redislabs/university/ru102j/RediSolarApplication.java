@@ -5,7 +5,7 @@ import com.redislabs.university.ru102j.command.RunCommand;
 import com.redislabs.university.ru102j.dao.CapacityDaoRedisImpl;
 import com.redislabs.university.ru102j.dao.FeedDaoRedisImpl;
 import com.redislabs.university.ru102j.dao.MetricDaoRedisZsetImpl;
-import com.redislabs.university.ru102j.dao.SiteDaoRedisImpl;
+import com.redislabs.university.ru102j.dao.SiteGeoDaoRedisImpl;
 import com.redislabs.university.ru102j.dao.SiteStatsDaoRedisImpl;
 import com.redislabs.university.ru102j.health.RediSolarHealthCheck;
 import com.redislabs.university.ru102j.resources.CapacityResource;
@@ -59,7 +59,9 @@ public class RediSolarApplication extends Application<RediSolarConfiguration> {
     // To use the geospatial features, replace the following lines with:
     // SiteGeoResource siteResource =
     //        new SiteGeoResource(new SiteGeoDaoRedisImpl(jedisPool));
-    SiteResource siteResource = new SiteResource(new SiteDaoRedisImpl(jedisPool));
+//    SiteResource siteResource = new SiteResource(new SiteDaoRedisImpl(jedisPool));
+//    environment.jersey().register(siteResource);
+    SiteResource siteResource = new SiteResource(new SiteGeoDaoRedisImpl(jedisPool));
     environment.jersey().register(siteResource);
 
     // For RedisTimeSeries: replace the next lines with
