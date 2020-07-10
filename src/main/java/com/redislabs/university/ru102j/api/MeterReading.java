@@ -22,9 +22,10 @@ public class MeterReading {
   private Double whGenerated;
   private Double tempC;
 
-  public MeterReading() {}
+  public MeterReading() {
+  }
 
-  public MeterReading(Map<String, String> map) {
+  public MeterReading(final Map<String, String> map) {
     this.siteId = Long.valueOf(map.get("siteId"));
     this.dateTime = ZonedDateTime.parse(map.get("dateTime"));
     this.whUsed = Double.valueOf(map.get("whUsed"));
@@ -33,12 +34,9 @@ public class MeterReading {
   }
 
   @JsonCreator
-  public MeterReading(
-      @JsonProperty("siteId") Long siteId,
-      @JsonProperty("dateTime") ZonedDateTime date,
-      @JsonProperty("whUsed") Double whUsed,
-      @JsonProperty("whGenerated") Double whGenerated,
-      @JsonProperty("tempC") Double tempC) {
+  public MeterReading(@JsonProperty("siteId") final Long siteId, @JsonProperty("dateTime") final ZonedDateTime date,
+      @JsonProperty("whUsed") final Double whUsed, @JsonProperty("whGenerated") final Double whGenerated,
+      @JsonProperty("tempC") final Double tempC) {
     this.siteId = siteId;
     this.dateTime = date;
     this.whUsed = whUsed;
@@ -52,7 +50,7 @@ public class MeterReading {
   }
 
   @JsonProperty("siteId")
-  public void setSiteId(Long siteId) {
+  public void setSiteId(final Long siteId) {
     this.siteId = siteId;
   }
 
@@ -62,7 +60,7 @@ public class MeterReading {
   }
 
   @JsonProperty("dateTime")
-  public void setDateTime(ZonedDateTime dateTime) {
+  public void setDateTime(final ZonedDateTime dateTime) {
     this.dateTime = dateTime;
   }
 
@@ -72,7 +70,7 @@ public class MeterReading {
   }
 
   @JsonProperty("whUsed")
-  public void setWhUsed(Double whUsed) {
+  public void setWhUsed(final Double whUsed) {
     this.whUsed = whUsed;
   }
 
@@ -82,7 +80,7 @@ public class MeterReading {
   }
 
   @JsonProperty("whGenerated")
-  public void setWhGenerated(Double whGenerated) {
+  public void setWhGenerated(final Double whGenerated) {
     this.whGenerated = whGenerated;
   }
 
@@ -92,12 +90,12 @@ public class MeterReading {
   }
 
   @JsonProperty("tempC")
-  public void setTempC(Double tempC) {
+  public void setTempC(final Double tempC) {
     this.tempC = tempC;
   }
 
   public Map<String, String> toMap() {
-    Map<String, String> map = new HashMap<>();
+    final Map<String, String> map = new HashMap<>();
 
     map.put("siteId", String.valueOf(siteId));
     map.put("dateTime", dateTime.toString());
@@ -109,14 +107,14 @@ public class MeterReading {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    MeterReading that = (MeterReading) o;
-    return Objects.equals(siteId, that.siteId)
-        && Objects.equals(dateTime, that.dateTime)
-        && Objects.equals(whUsed, that.whUsed)
-        && Objects.equals(whGenerated, that.whGenerated)
+  public boolean equals(final Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
+    final MeterReading that = (MeterReading) o;
+    return Objects.equals(siteId, that.siteId) && Objects.equals(dateTime, that.dateTime)
+        && Objects.equals(whUsed, that.whUsed) && Objects.equals(whGenerated, that.whGenerated)
         && Objects.equals(tempC, that.tempC);
   }
 
@@ -127,17 +125,7 @@ public class MeterReading {
 
   @Override
   public String toString() {
-    return "MeterReading{"
-        + "siteId="
-        + siteId
-        + ", dateTime="
-        + dateTime
-        + ", whUsed="
-        + whUsed
-        + ", whGenerated="
-        + whGenerated
-        + ", tempC="
-        + tempC
-        + '}';
+    return "MeterReading{" + "siteId=" + siteId + ", dateTime=" + dateTime + ", whUsed=" + whUsed + ", whGenerated="
+        + whGenerated + ", tempC=" + tempC + '}';
   }
 }

@@ -17,7 +17,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,7 +29,8 @@ public class SiteGeoDaoRedisImplTest {
   private static JedisPool jedisPool;
   private static Jedis jedis;
   private static TestKeyManager keyManager;
-  @Rule public ExpectedException thrown = ExpectedException.none();
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
   private Set<Site> sites;
 
   @BeforeClass
@@ -38,13 +38,8 @@ public class SiteGeoDaoRedisImplTest {
     String password = HostPort.getRedisPassword();
 
     if (password.length() > 0) {
-      jedisPool =
-          new JedisPool(
-              new JedisPoolConfig(),
-              HostPort.getRedisHost(),
-              HostPort.getRedisPort(),
-              2000,
-              password);
+      jedisPool = new JedisPool(new JedisPoolConfig(), HostPort.getRedisHost(), HostPort.getRedisPort(), 2000,
+          password);
     } else {
       jedisPool = new JedisPool(HostPort.getRedisHost(), HostPort.getRedisPort());
     }
@@ -129,7 +124,6 @@ public class SiteGeoDaoRedisImplTest {
   }
 
   // Challenge #5
-  @Ignore
   @Test
   public void findByGeoWithExcessCapacity() {
     SiteGeoDao siteDao = new SiteGeoDaoRedisImpl(jedisPool);
